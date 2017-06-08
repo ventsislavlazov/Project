@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import exceptions.MySQLExseption;
+import exceptions.MYSQLException;
 import model.classes.FilterSession;
 import model.dao.DBFinanceDAO;
 
@@ -30,7 +30,7 @@ public class GetMoneyFromTheShopServlet extends HttpServlet {
 		int currentMoneyInTheShop = 0;
 		try {
 			currentMoneyInTheShop = finanaceDAO.getAllMoneyByTheLastTransaction();
-		} catch (MySQLExseption e) {
+		} catch (MYSQLException e) {
 			e.getMessage();
 			e.printStackTrace();
 			request.getRequestDispatcher("InternalServerError.jsp").forward(request, response);
@@ -40,7 +40,7 @@ public class GetMoneyFromTheShopServlet extends HttpServlet {
 			int moneyAfterTaking = currentMoneyInTheShop - moneyToTake;
 			try {
 				finanaceDAO.getMoneyFromTheShop(moneyAfterTaking);
-			} catch (MySQLExseption e) {
+			} catch (MYSQLException e) {
 				e.getMessage();
 				e.printStackTrace();
 				request.getRequestDispatcher("InternalServerError.jsp").forward(request, response);
@@ -51,14 +51,14 @@ public class GetMoneyFromTheShopServlet extends HttpServlet {
 				int transactionId = 0;
 				try {
 					transactionId = finanaceDAO.getTheLastTransactionsIdNewMethod();
-				} catch (MySQLExseption e) {
+				} catch (MYSQLException e) {
 					e.getMessage();
 					e.printStackTrace();
 					request.getRequestDispatcher("InternalServerError.jsp").forward(request, response);
 				}
 				try {
 					finanaceDAO.updateEventByTransactionId(event, transactionId);
-				} catch (MySQLExseption e) {
+				} catch (MYSQLException e) {
 					e.getMessage();
 					e.printStackTrace();
 					request.getRequestDispatcher("InternalServerError.jsp").forward(request, response);
@@ -71,7 +71,7 @@ public class GetMoneyFromTheShopServlet extends HttpServlet {
 			session.removeAttribute("allTransactions");
 			try {
 				session.setAttribute("allTransactions", finanaceDAO.getAllTransactions());
-			} catch (MySQLExseption e) {
+			} catch (MYSQLException e) {
 				e.getMessage();
 				e.printStackTrace();
 				request.getRequestDispatcher("InternalServerError.jsp").forward(request, response);

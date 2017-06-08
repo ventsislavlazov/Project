@@ -1,10 +1,10 @@
 package exceptions;
 
-public class MyIOException extends Exception {
+public class MYIOException extends Exception {
 
 	private static final long serialVersionUID = 1L;
 
-	public MyIOException(String message){
+	public MYIOException(String message){
 		super(message);
 	}
 	

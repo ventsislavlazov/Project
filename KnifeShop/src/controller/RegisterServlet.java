@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import exceptions.MySQLExseption;
+import exceptions.MYSQLException;
 import model.classes.User;
 import model.dao.DBUserDAO;
 
@@ -73,7 +73,7 @@ public class RegisterServlet extends HttpServlet {
 						request = setRequstAttributeForInformation(request, username, password, ageFromJsp, email);
 						request.getRequestDispatcher("Register.jsp").forward(request, response);
 					}
-				} catch (MySQLExseption e) {
+				} catch (MYSQLException e) {
 					e.getMessage();
 					e.printStackTrace();
 					request.getRequestDispatcher("InternalServerError.jsp").forward(request, response);

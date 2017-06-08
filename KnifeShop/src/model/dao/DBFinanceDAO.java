@@ -22,8 +22,8 @@ import java.util.Date;
 
 import javax.naming.PartialResultException;
 
-import exceptions.MyIOException;
-import exceptions.MySQLExseption;
+import exceptions.MYIOException;
+import exceptions.MYSQLException;
 import model.classes.Knife;
 import model.classes.Transaction;
 import model.db.DBManager;
@@ -50,7 +50,7 @@ public class DBFinanceDAO implements IDBFinanceDAO{
 	 DBUserDAO userDAO = new DBUserDAO();
 
 	@Override
-	public int getTheNumberOfTheLastTransaction() throws MySQLExseption {
+	public int getTheNumberOfTheLastTransaction() throws MYSQLException {
 		int lastTransactionsId = 0;
 		String query = "SELECT last_insert_id() AS last_id FROM KnifeShop.Transactions";
 		try {
@@ -60,13 +60,13 @@ public class DBFinanceDAO implements IDBFinanceDAO{
 				lastTransactionsId = rs.getInt("last_id");
 			}
 		} catch (SQLException e) {
-			throw new MySQLExseption("There is a problem with the DB");
+			throw new MYSQLException("There is a problem with the DB");
 		}
 		return lastTransactionsId;
 	}
 
 	@Override
-	public int getAllMoneyByTheLastTransaction() throws MySQLExseption {
+	public int getAllMoneyByTheLastTransaction() throws MYSQLException {
 		String query = "SELECT allMoney FROM KnifeShop.Transactions WHERE transactionId = ?";
 		int allMoney = 0;
 		int lastTransactionsId = getTheLastTransactionsIdNewMethod();
@@ -78,37 +78,37 @@ public class DBFinanceDAO implements IDBFinanceDAO{
 				allMoney = rs.getInt(1);
 			}
 		} catch (SQLException e) {
-			throw new MySQLExseption("There is a problem with the DB");
+			throw new MYSQLException("There is a problem with the DB");
 		}
 		return allMoney;
 	}
 
 	@Override
-	public void addMoneyToTheShop(int addedMoney) throws MySQLExseption {
+	public void addMoneyToTheShop(int addedMoney) throws MYSQLException {
 		String query = "INSERT INTO KnifeShop.Transactions (allMoney, addedMoney) VALUES (?, true)";
 		try {
 			PreparedStatement st = manager.getConnection().prepareStatement(query);
 			st.setInt(1, addedMoney);
 			st.execute();
 		} catch (SQLException e) {
-			throw new MySQLExseption("There is a problem with the DB");
+			throw new MYSQLException("There is a problem with the DB");
 		}
 	}
 
 	@Override
-	public void getMoneyFromTheShop(int takenMoney) throws MySQLExseption {
+	public void getMoneyFromTheShop(int takenMoney) throws MYSQLException {
 		String query = "INSERT INTO KnifeShop.Transactions (allMoney, addedMoney) VALUES (?, false)";
 		try {
 			PreparedStatement st = manager.getConnection().prepareStatement(query);
 			st.setInt(1, takenMoney);
 			st.execute();
 		} catch (SQLException e) {
-			throw new MySQLExseption("There is a problem with the DB");
+			throw new MYSQLException("There is a problem with the DB");
 		}
 	}
 
 	@Override
-	public void updateEventByTransactionId(String event, int transactionId) throws MySQLExseption {
+	public void updateEventByTransactionId(String event, int transactionId) throws MYSQLException {
 		String query = "UPDATE KnifeShop.Transactions SET event=? WHERE transactionId = ?";
 		try {
 			PreparedStatement st = manager.getConnection().prepareStatement(query);
@@ -116,12 +116,12 @@ public class DBFinanceDAO implements IDBFinanceDAO{
 			st.setInt(2, transactionId);
 			st.execute();
 		} catch (SQLException e) {
-			throw new MySQLExseption("There is a problem with the DB");
+			throw new MYSQLException("There is a problem with the DB");
 		}
 	}
 
 	@Override
-	public int getTheLastTransactionsIdNewMethod() throws MySQLExseption {
+	public int getTheLastTransactionsIdNewMethod() throws MYSQLException {
 		String query = "SELECT transactionId FROM KnifeShop.Transactions ORDER BY transactionId DESC LIMIT 1";
 		int lastId = 0;
 		try {
@@ -131,13 +131,13 @@ public class DBFinanceDAO implements IDBFinanceDAO{
 				lastId = rs.getInt(1);
 			}
 		} catch (SQLException e) {
-			throw new MySQLExseption("There is a problem with the DB");
+			throw new MYSQLException("There is a problem with the DB");
 		}
 		return lastId;
 	}
 
 	@Override
-	public ArrayList<Transaction> getAllTransactions() throws MySQLExseption {
+	public ArrayList<Transaction> getAllTransactions() throws MYSQLException {
 		String query = "SELECT transactionId, allMoney, addedMoney, event FROM KnifeShop.Transactions";
 		ArrayList<Transaction> allTransactions = new ArrayList<>();
 		try {
@@ -155,13 +155,13 @@ public class DBFinanceDAO implements IDBFinanceDAO{
 				allTransactions.add(transaction);
 			}
 		} catch (SQLException e) {
-			throw new MySQLExseption("There is a problem with the DB");
+			throw new MYSQLException("There is a problem with the DB");
 		}
 		return allTransactions;
 	}
 
 	@Override
-	public int getTheForlastAllMoney() throws MySQLExseption {
+	public int getTheForlastAllMoney() throws MYSQLException {
 		String query = "SELECT allMoney FROM KnifeShop.Transactions ORDER BY transactionId DESC LIMIT 1,1";
 		int foreLastAllMoney = 0;
 		try {
@@ -171,13 +171,13 @@ public class DBFinanceDAO implements IDBFinanceDAO{
 				foreLastAllMoney = rs.getInt(1);
 			}
 		} catch (SQLException e) {
-			throw new MySQLExseption("There is a problem with the DB");
+			throw new MYSQLException("There is a problem with the DB");
 		}
 		return foreLastAllMoney;
 	}
 
 	@Override
-	public int getThePreviousId(int currentId) throws MySQLExseption {
+	public int getThePreviousId(int currentId) throws MYSQLException {
 		String query = "SELECT * FROM KnifeShop.Transactions WHERE transactionId = (SELECT MAX(transactionId) FROM Transactions WHERE transactionId < ?)";
 		int previousId = 0;
 		try {
@@ -188,13 +188,13 @@ public class DBFinanceDAO implements IDBFinanceDAO{
 				previousId = rs.getInt(1);
 			}
 		} catch (SQLException e) {
-			throw new MySQLExseption("There is a problem with the DB");
+			throw new MYSQLException("There is a problem with the DB");
 		}
 		return previousId;
 	}
 
 	@Override
-	public int getAllMoneyByTransactionId(int transactionId) throws MySQLExseption {
+	public int getAllMoneyByTransactionId(int transactionId) throws MYSQLException {
 		String query = "SELECT allMoney FROM KnifeShop.Transactions WHERE transactionId = ?";
 		try {
 			PreparedStatement st = manager.getConnection().prepareStatement(query);
@@ -204,13 +204,13 @@ public class DBFinanceDAO implements IDBFinanceDAO{
 				return rs.getInt(1);
 			}
 		} catch (SQLException e) {
-			throw new MySQLExseption("There is a problem with the DB");
+			throw new MYSQLException("There is a problem with the DB");
 		}
 		return 0;
 	}
 
 	@Override
-	public void makeTransactionAddMoneySellKnife(ArrayList<Knife> allKnifesFromTheBasket, int userId) throws MyIOException, MySQLExseption {
+	public void makeTransactionAddMoneySellKnife(ArrayList<Knife> allKnifesFromTheBasket, int userId) throws MYIOException, MYSQLException {
 		
 		Connection con = manager.getConnection();
 		
@@ -259,7 +259,7 @@ public class DBFinanceDAO implements IDBFinanceDAO{
 			}
 			
 			con.commit();
-			String pathToDir = "/Users"+ File.separator +"Venci" + File.separator  + "Desktop" + File.separator+ "Sells";
+			String pathToDir = File.separator +"Users"+ File.separator +"Venci" + File.separator  + "Desktop" + File.separator+ "Sells";
 			File theDir = new File(pathToDir);
 			if (!theDir.exists()) {
 			    theDir.mkdir();
@@ -276,7 +276,7 @@ public class DBFinanceDAO implements IDBFinanceDAO{
 				try {
 					file.createNewFile();
 				} catch (IOException e) {
-					throw new MyIOException("Exception checking if file exists");
+					throw new MYIOException("Exception checking if file exists");
 				}
 			}else{
 				doesTheFileExist = true;
@@ -305,7 +305,7 @@ public class DBFinanceDAO implements IDBFinanceDAO{
 					bw.write(content);
 					
 				} catch (IOException e) {
-					throw new MyIOException("Exception checking if file exists");
+					throw new MYIOException("Exception checking if file exists");
 				} finally {
 
 					try {
@@ -317,7 +317,7 @@ public class DBFinanceDAO implements IDBFinanceDAO{
 							fw.close();
 
 					} catch (IOException ex) {
-						throw new MyIOException("Exception checking if file exists");
+						throw new MYIOException("Exception checking if file exists");
 					}
 
 
@@ -340,7 +340,7 @@ public class DBFinanceDAO implements IDBFinanceDAO{
 			try {
 				con.setAutoCommit(true);
 			} catch (SQLException e) {
-				throw new MySQLExseption("There is a problem with the DB");
+				throw new MYSQLException("There is a problem with the DB");
 			}
 		}
 		

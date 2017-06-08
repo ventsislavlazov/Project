@@ -254,7 +254,9 @@
 			   		<input type="image" src="./GetShoppingBasketImageServlet" alt="shoppingBasket" id = "idBasketImage" style = "width: 34px; height: 36px; margin-top: 5px; margin-right: 5px; margin-bottom: -22px; padding-top: 5px; padding-right: 7px;">
 			    </form>
 		   </li>
-		   
+		    <li class="logout">
+		  		<a href="LogoutServlet">Log out</a>
+		  	</li>
 		</ul>
 		
 		

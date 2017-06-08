@@ -14,8 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import exceptions.MyIOException;
-import exceptions.MySQLExseption;
+import exceptions.MYIOException;
+import exceptions.MYSQLException;
 import model.classes.FilterSession;
 import model.classes.Knife;
 import model.dao.DBBasketDAO;
@@ -67,11 +67,11 @@ public class BuyEverythingFromTheBasketServlet extends HttpServlet {
 		
 		try {
 			financeDAO.makeTransactionAddMoneySellKnife(allKnifesFromTheBasket, userId);
-		} catch (MyIOException e) {
+		} catch (MYIOException e) {
 			e.getMessage();
 			e.printStackTrace();
 			request.getRequestDispatcher("InternalServerError.jsp").forward(request, response);
-		} catch (MySQLExseption e) {
+		} catch (MYSQLException e) {
 			e.getMessage();
 			e.printStackTrace();
 			request.getRequestDispatcher("InternalServerError.jsp").forward(request, response);
@@ -81,7 +81,7 @@ public class BuyEverythingFromTheBasketServlet extends HttpServlet {
 		session.removeAttribute("allSoldKnifes");
 		try {
 			session.setAttribute("allSoldKnifes", knifeDAO.getAllSoldKnifes());
-		} catch (MySQLExseption e) {
+		} catch (MYSQLException e) {
 			e.getMessage();
 			e.printStackTrace();
 			request.getRequestDispatcher("InternalServerError.jsp").forward(request, response);
@@ -90,7 +90,7 @@ public class BuyEverythingFromTheBasketServlet extends HttpServlet {
 		session.removeAttribute("bestsellers");
 		try {
 			session.setAttribute("bestsellers", knifeDAO.getTheThreeBestSellers());
-		} catch (MySQLExseption e) {
+		} catch (MYSQLException e) {
 			e.getMessage();
 			e.printStackTrace();
 			request.getRequestDispatcher("InternalServerError.jsp").forward(request, response);
@@ -99,7 +99,7 @@ public class BuyEverythingFromTheBasketServlet extends HttpServlet {
 		session.removeAttribute("cheapest");
 		try {
 			session.setAttribute("cheapest", knifeDAO.getTheThreeCheapest());
-		} catch (MySQLExseption e) {
+		} catch (MYSQLException e) {
 			e.getMessage();
 			e.printStackTrace();
 			request.getRequestDispatcher("InternalServerError.jsp").forward(request, response);
@@ -108,7 +108,7 @@ public class BuyEverythingFromTheBasketServlet extends HttpServlet {
 		session.removeAttribute("mostExpenisve");
 		try {
 			session.setAttribute("mostExpenisve", knifeDAO.getTheThreeMostExpensive());
-		} catch (MySQLExseption e) {
+		} catch (MYSQLException e) {
 			e.getMessage();
 			e.printStackTrace();
 			request.getRequestDispatcher("InternalServerError.jsp").forward(request, response);
@@ -117,16 +117,28 @@ public class BuyEverythingFromTheBasketServlet extends HttpServlet {
 		session.removeAttribute("lowestQuantity");
 		try {
 			session.setAttribute("lowestQuantity", knifeDAO.getTheThreeWithLowestQuantity());
-		} catch (MySQLExseption e) {
+		} catch (MYSQLException e) {
 			e.getMessage();
 			e.printStackTrace();
 			request.getRequestDispatcher("InternalServerError.jsp").forward(request, response);
 		}
+		
+		//w sesiqta slagame trite noja s naj - malko koli4estwo po-golqmo ot 0
+				session.removeAttribute("lowestQuantityMoreThanZero");
+				try {
+					session.setAttribute("lowestQuantityMoreThanZero", knifeDAO.getLastTreeByQuantityMoreThanZero());
+				} catch (MYSQLException e) {
+					e.getMessage();
+					e.printStackTrace();
+					request.getRequestDispatcher("InternalServerError.jsp").forward(request, response);
+				}
+		
+
 		//w sesiqta slagame trite noja s naj - golqmo koli4estwo
 		session.removeAttribute("highestQuantity");
 		try {
 			session.setAttribute("highestQuantity", knifeDAO.getTheThreeWithHighestQuantity());
-		} catch (MySQLExseption e) {
+		} catch (MYSQLException e) {
 			e.getMessage();
 			e.printStackTrace();
 			request.getRequestDispatcher("InternalServerError.jsp").forward(request, response);
@@ -134,7 +146,7 @@ public class BuyEverythingFromTheBasketServlet extends HttpServlet {
 		
 		try {
 			setSession(session);
-		} catch (MySQLExseption e1) {
+		} catch (MYSQLException e1) {
 			e1.getMessage();
 			e1.printStackTrace();
 			request.getRequestDispatcher("InternalServerError.jsp").forward(request, response);
@@ -145,7 +157,7 @@ public class BuyEverythingFromTheBasketServlet extends HttpServlet {
 		session.removeAttribute("allTransactions");
 		try {
 			session.setAttribute("allTransactions", financeDAO.getAllTransactions());
-		} catch (MySQLExseption e) {
+		} catch (MYSQLException e) {
 			e.getMessage();
 			e.printStackTrace();
 			request.getRequestDispatcher("InternalServerError.jsp").forward(request, response);
@@ -155,7 +167,7 @@ public class BuyEverythingFromTheBasketServlet extends HttpServlet {
 		filter.filter(request, response, session, "Basket.jsp");
 	}
 	
-	public void setSession(HttpSession session) throws MySQLExseption{
+	public void setSession(HttpSession session) throws MYSQLException{
 		//mahame we4e prodadenite nojowe ot sessiqta s koli4kata
 		session.removeAttribute("knifesInTheBasket");
 		session.setAttribute("knifesInTheBasket", new ArrayList<>());

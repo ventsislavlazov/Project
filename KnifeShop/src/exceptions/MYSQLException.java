@@ -1,10 +1,10 @@
 package exceptions;
 
-public class MySQLExseption extends Exception {
+public class MYSQLException extends Exception {
 	
 	private static final long serialVersionUID = 1L;
 
-	public MySQLExseption(String message){
+	public MYSQLException(String message){
 		super(message);
 	}
 

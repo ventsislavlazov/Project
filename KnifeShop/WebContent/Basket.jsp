@@ -12,22 +12,22 @@
 <title>Insert title here</title>
 	<style>
 	
-		#success{
-			position: absolute;
-			top: 470px;
-			left: 920px;
-			color: green;
-			font-size:45px;
-			text-align: center;
+		#success {
+		    position: absolute;
+		    top: 100px;
+		    left: 665px;
+		    color: green;
+		    font-size: 23px;
+		    text-align: center;
 		}
 		
 		#errorNotEnoghtQuantity{
 			position: absolute;
-			top: 470px;
-			left: 920px;
-			color: red;
-			font-size:45px;
-			text-align: center;
+		    top: 100px;
+		    left: 469px;
+		    color: red;
+		    font-size: 23px;
+		    text-align: center;
 		}
 		
 		#tableId{
@@ -119,7 +119,7 @@
 			 		 	<td align="center"><img src="./GetImageServlet?image=${record.imageName}" alt="knife image" style="width:200px;height:150px;"></td>
 			 			<td align="center">
 				 			<form action = "RemoveFromBasketServlet" method = "POST">
-				 				<input type = "number" name = "quantityToRemove" min="1" placeholder = "Quantity to remove">
+				 				<input type = "number" name = "quantityToRemove" min="1" placeholder = "Quantity to remove" required>
 				 				<input type="hidden" name="knifeQuantityInTheBasket" value="${record.quantityBasket}">
 				 				<input type="hidden" name="knifeId" value="${record.id}">
 				 				<input type="hidden" name="knifeModel" value="${record.model}">

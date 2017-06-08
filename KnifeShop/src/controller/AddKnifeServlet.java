@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
-import exceptions.MySQLExseption;
+import exceptions.MYSQLException;
 import model.classes.FilterSession;
 import model.classes.Knife;
 import model.dao.DBKnifeDAO;
@@ -81,14 +81,14 @@ public class AddKnifeServlet extends HttpServlet /*implements Serializable*/{
 						}else{
 							try {
 								knifeDAO.addKnifeToDB(knife);
-							} catch (MySQLExseption e) {
+							} catch (MYSQLException e) {
 								e.getMessage();
 								e.printStackTrace();
 								request.getRequestDispatcher("InternalServerError.jsp").forward(request, response);
 							}
 							try {
 								knife.setId(knifeDAO.getLastInsertedId());
-							} catch (MySQLExseption e) {
+							} catch (MYSQLException e) {
 								e.getMessage();
 								e.printStackTrace();
 								request.getRequestDispatcher("InternalServerError.jsp").forward(request, response);
@@ -102,7 +102,7 @@ public class AddKnifeServlet extends HttpServlet /*implements Serializable*/{
 							request.setAttribute("success", "you have added the knife successfully");
 							
 						}
-					} catch (MySQLExseption e) {
+					} catch (MYSQLException e) {
 						e.getMessage();
 						e.printStackTrace();
 						request.getRequestDispatcher("InternalServerError.jsp").forward(request, response);
@@ -120,7 +120,7 @@ public class AddKnifeServlet extends HttpServlet /*implements Serializable*/{
 		filter.filter(request, response, session, "AddKnife.jsp");
 	}
 	
-	public boolean isThereSuchKnifeInDB(Knife knife) throws MySQLExseption {
+	public boolean isThereSuchKnifeInDB(Knife knife) throws MYSQLException {
 		ArrayList<Knife> allKnifes = knifeDAO.getAllKnifesFromDB();
 		for(Knife k : allKnifes){
 			if(k.getLength() == knife.getLength() &&
@@ -137,7 +137,7 @@ public class AddKnifeServlet extends HttpServlet /*implements Serializable*/{
 		return false;
 	}
 	
-	public void setSession(HttpSession session, ArrayList<Knife> currentKnifes) throws MySQLExseption{
+	public void setSession(HttpSession session, ArrayList<Knife> currentKnifes) throws MYSQLException{
 		session.removeAttribute("allKnifes");
 		session.setAttribute("allKnifes", currentKnifes);
 		

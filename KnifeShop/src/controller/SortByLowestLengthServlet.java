@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-import exceptions.MySQLExseption;
+import exceptions.MYSQLException;
 import model.classes.Knife;
 import model.dao.DBKnifeDAO;
 
@@ -28,7 +28,7 @@ public class SortByLowestLengthServlet extends HttpServlet {
 		ArrayList<Knife> knifesSortedByLowestLength = new ArrayList<>();
 		try {
 			knifesSortedByLowestLength = knifeDAO.getAllKnifesSortByLowestLength();
-		} catch (MySQLExseption e) {
+		} catch (MYSQLException e) {
 			e.getMessage();
 			e.printStackTrace();
 			request.getRequestDispatcher("InternalServerError.jsp").forward(request, response);

@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import exceptions.MySQLExseption;
+import exceptions.MYSQLException;
 import model.classes.FilterSession;
 import model.dao.DBKnifeDAO;
 
@@ -43,7 +43,7 @@ public class AddManufactorToDBServlet extends HttpServlet {
 				}else{
 					request.setAttribute("errorExists", "you have already added this manufactor");
 				}
-			} catch (MySQLExseption e) {
+			} catch (MYSQLException e) {
 				e.getMessage();
 				e.printStackTrace();
 				request.getRequestDispatcher("InternalServerError.jsp").forward(request, response);

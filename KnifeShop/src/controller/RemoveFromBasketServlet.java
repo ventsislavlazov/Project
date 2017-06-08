@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import exceptions.MySQLExseption;
+import exceptions.MYSQLException;
 import model.classes.FilterSession;
 import model.classes.Knife;
 import model.dao.DBBasketDAO;
@@ -37,7 +37,7 @@ public class RemoveFromBasketServlet extends HttpServlet {
 		int currentQuantityInTheShop = 0;
 		try {
 			currentQuantityInTheShop = knifeDAO.getQuantityForCurrentKnifeByKnifeId(knifeId);
-		} catch (MySQLExseption e) {
+		} catch (MYSQLException e) {
 			e.getMessage();
 			e.printStackTrace();
 			request.getRequestDispatcher("InternalServerError.jsp").forward(request, response);
@@ -47,12 +47,10 @@ public class RemoveFromBasketServlet extends HttpServlet {
 		int knifeQuantityToRemove = Integer.parseInt(request.getParameter("quantityToRemove").toString());
 		String knifeModel = request.getParameter("knifeModel").toString();
 		
-		System.out.println("quantity to remove " + knifeQuantityToRemove);
-		
 		if(knifeQuantityInTheBasket >= knifeQuantityToRemove){
 			try {
 				basketDAO.removeQuantitFromKnifeInTheBasket(currentUserId, knifeId, knifeQuantityToRemove);
-			} catch (MySQLExseption e) {
+			} catch (MYSQLException e) {
 				e.getMessage();
 				e.printStackTrace();
 				request.getRequestDispatcher("InternalServerError.jsp").forward(request, response);
@@ -63,14 +61,14 @@ public class RemoveFromBasketServlet extends HttpServlet {
 					//maham noja ot koli4kata
 					basketDAO.removeKnifeFromBasketByKnifeId(currentUserId, knifeId);
 				}
-			} catch (MySQLExseption e) {
+			} catch (MYSQLException e) {
 				e.getMessage();
 				e.printStackTrace();
 				request.getRequestDispatcher("InternalServerError.jsp").forward(request, response);
 			}
 			try {
 				knifeDAO.addQuantityToDB(currentQuantityInTheShop + knifeQuantityToRemove, knifeId);
-			} catch (MySQLExseption e) {
+			} catch (MYSQLException e) {
 				e.getMessage();
 				e.printStackTrace();
 				request.getRequestDispatcher("InternalServerError.jsp").forward(request, response);
@@ -79,7 +77,7 @@ public class RemoveFromBasketServlet extends HttpServlet {
 			ArrayList<Knife> allKnifesFromTheBasket = new ArrayList<>();
 			try {
 				allKnifesFromTheBasket = basketDAO.getAllKnifesFromTheBasketByUserId(currentUserId);
-			} catch (MySQLExseption e) {
+			} catch (MYSQLException e) {
 				e.getMessage();
 				e.printStackTrace();
 				request.getRequestDispatcher("InternalServerError.jsp").forward(request, response);

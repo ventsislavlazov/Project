@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import exceptions.MySQLExseption;
+import exceptions.MYSQLException;
 import model.classes.FilterSession;
 import model.classes.Knife;
 import model.dao.DBKnifeDAO;
@@ -40,7 +40,7 @@ public class AddQuantityServlet extends HttpServlet {
 			int currentQuantity=0;
 			try {
 				currentQuantity = knifeDAO.getQuantityForCurrentKnifeByKnifeId(knifeId);
-			} catch (MySQLExseption e) {
+			} catch (MYSQLException e) {
 				e.getMessage();
 				e.printStackTrace();
 				request.getRequestDispatcher("InternalServerError.jsp").forward(request, response);
@@ -48,7 +48,7 @@ public class AddQuantityServlet extends HttpServlet {
 			currentQuantity+=quantityToAdd;
 			try {
 				knifeDAO.addQuantityToDB(currentQuantity, knifeId);
-			} catch (MySQLExseption e) {
+			} catch (MYSQLException e) {
 				e.getMessage();
 				e.printStackTrace();
 				request.getRequestDispatcher("InternalServerError.jsp").forward(request, response);
@@ -58,7 +58,7 @@ public class AddQuantityServlet extends HttpServlet {
 			ArrayList<Knife> currentKnifes = new ArrayList<>();
 			try {
 				currentKnifes = knifeDAO.getAllKnifesFromDB();
-			} catch (MySQLExseption e) {
+			} catch (MYSQLException e) {
 				e.getMessage();
 				e.printStackTrace();
 				request.getRequestDispatcher("InternalServerError.jsp").forward(request, response);
@@ -66,7 +66,7 @@ public class AddQuantityServlet extends HttpServlet {
 			
 			try {
 				setSession(session, currentKnifes);
-			} catch (MySQLExseption e) {
+			} catch (MYSQLException e) {
 				e.getMessage();
 				e.printStackTrace();
 				request.getRequestDispatcher("InternalServerError.jsp").forward(request, response);
@@ -81,7 +81,7 @@ public class AddQuantityServlet extends HttpServlet {
 		filter.filter(request, response, session, "AddQuantity.jsp");
 	}
 	
-	public void setSession(HttpSession session, ArrayList<Knife> currentKnifes) throws MySQLExseption{
+	public void setSession(HttpSession session, ArrayList<Knife> currentKnifes) throws MYSQLException{
 		session.removeAttribute("allKnifes");
 		session.setAttribute("allKnifes", currentKnifes);
 		
@@ -94,6 +94,9 @@ public class AddQuantityServlet extends HttpServlet {
 		
 		session.removeAttribute("lowestQuantity");
 		session.setAttribute("lowestQuantity", knifeDAO.getTheThreeWithLowestQuantity());
+		
+		session.removeAttribute("lowestQuantityMoreThanZero");
+		session.setAttribute("lowestQuantityMoreThanZero", knifeDAO.getLastTreeByQuantityMoreThanZero());
 		
 		session.removeAttribute("highestQuantity");
 		session.setAttribute("highestQuantity", knifeDAO.getTheThreeWithHighestQuantity());

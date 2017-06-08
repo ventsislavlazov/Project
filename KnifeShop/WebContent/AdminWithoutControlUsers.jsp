@@ -328,6 +328,9 @@
 			    </form>
 		  	 </div>
 		  </li>
+		  <li class="logout">
+		  	<a href="LogoutServlet">Log out</a>
+		  </li>
 		</ul>
 
 	<script>

@@ -43,6 +43,10 @@
 				background-color:lightgrey;
 				height: 40px;
 			}
+			
+			#text{
+				max-width: 396px;
+			}
 		
 	</style>
 
@@ -74,7 +78,7 @@
 				 </td>
 				</tr>
 			</table>
-			<textarea rows="6" cols="50" name="commentName" form="formId" placeholder = "Enter comment here..."></textarea>
+			<textarea rows="6" cols="50" name="commentName" id = "text" form="formId" placeholder = "Enter comment here..."></textarea>
 	 </div>
 
 </body>

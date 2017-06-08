@@ -16,38 +16,38 @@
 	
 		#successAddMore{
 			position: absolute;
-			top: 270px;
-			left: 250px;
-			color: green;
-			font-size:45px;
-			text-align: center;
+		    top: 83px;
+		    left: 591px;
+		    color: green;
+		    font-size: 23px;
+		    text-align: center;
 		}
 		
-		#successAdd{
-			position: absolute;
-			top: 270px;
-			left: 250px;
-			color: green;
-			font-size:45px;
-			text-align: center;
+		#successAdd {
+		    position: absolute;
+		    top: 83px;
+		    left: 591px;
+		    color: green;
+		    font-size: 23px;
+		    text-align: center;
 		}
 		
 		#notEnaughtQuantity{
-			position: absolute;
-			top: 270px;
-			left: 250px;
-			color: red;
-			font-size:45px;
-			text-align: center;
+			 position: absolute;
+		    top: 80px;
+		    left: 850px;
+		    color: red;
+		    font-size: 23px;
+		    text-align: center;
 		}
 		
-		#noQuantity{
-			position: absolute;
-			top: 270px;
-			left: 250px;
-			color: red;
-			font-size:45px;
-			text-align: center;
+		#noQuantity {
+		    position: absolute;
+		    top: 80px;
+		    left: 850px;
+		    color: red;
+		    font-size: 23px;
+		    text-align: center;
 		}
 		
 		#tableId{
@@ -203,7 +203,7 @@
 				 		 	<td align="center"><img src="./GetImageServlet?image=${record.imageName}" alt="knife image" style="width:200px;height:150px;"></td>
 				 			<td align="center">
 					 			<form action = "AddToBasketServlet" method = "POST">
-					 				<input type = "number" name = "quantityToAdd" min="1" placeholder="Quantity">
+					 				<input type = "number" name = "quantityToAdd" min="1" placeholder="Quantity" required>
 					 				<input type="hidden" name="knifeToAddId" value="${record.id}">
 					 				<input type="hidden" name="knifeToAddModel" value="${record.model}">
 					 				<input type = "submit" value = "add">

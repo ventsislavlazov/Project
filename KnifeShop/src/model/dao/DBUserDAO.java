@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import exceptions.MySQLExseption;
+import exceptions.MYSQLException;
 import model.classes.User;
 import model.db.DBManager;
 
@@ -31,7 +31,7 @@ public class DBUserDAO implements IDBUserDAO{
 	private static final String IS_THERE_SUCH_USER_IN_DB_BY_USERNAME_AND_PASSWORD = "SELECT id FROM KnifeShop.User WHERE username = ? AND password = ?";
 
 	@Override
-	public void addUserToDB(User user) throws MySQLExseption {
+	public void addUserToDB(User user) throws MYSQLException {
 		String query = ADD_USER_TO_DB;
 		try {
 			PreparedStatement st = manager.getConnection().prepareStatement(query);
@@ -41,12 +41,12 @@ public class DBUserDAO implements IDBUserDAO{
 			st.setInt(4, user.getAge());
 			st.execute();
 		} catch (SQLException e) {
-			throw new MySQLExseption("There is a problem with the DB");
+			throw new MYSQLException("There is a problem with the DB");
 		}
 	}
 	
 	@Override
-	public boolean isThereSuchUserInDBByUsernameAndPassword(String username, String password) throws MySQLExseption {
+	public boolean isThereSuchUserInDBByUsernameAndPassword(String username, String password) throws MYSQLException {
 		String query = IS_THERE_SUCH_USER_IN_DB_BY_USERNAME_AND_PASSWORD;
 		try {
 			PreparedStatement st = manager.getConnection().prepareStatement(query);
@@ -57,13 +57,13 @@ public class DBUserDAO implements IDBUserDAO{
 				return true;
 			}
 		} catch (SQLException e) {
-			throw new MySQLExseption("There is a problem with the DB");
+			throw new MYSQLException("There is a problem with the DB");
 		}
 		return false;
 	}
 	
 	@Override
-	public User getUserByUsernameFromDB(String username) throws MySQLExseption {
+	public User getUserByUsernameFromDB(String username) throws MYSQLException {
 		String query = "SELECT id, username, password, email, age FROM KnifeShop.User WHERE username = ?";
 		User user = new User();
 		try {
@@ -78,34 +78,34 @@ public class DBUserDAO implements IDBUserDAO{
 				user.setAge(rs.getInt(5));
 			}
 		} catch (SQLException e) {
-			throw new MySQLExseption("There is a problem with the DB");
+			throw new MYSQLException("There is a problem with the DB");
 		}
 		return user;
 	}
 	@Override
-	public void makeUserToAdminByUserId(int userId) throws MySQLExseption {
+	public void makeUserToAdminByUserId(int userId) throws MYSQLException {
 		String query = "UPDATE KnifeShop.User SET isAdmin=true WHERE id = ?";
 		try {
 			PreparedStatement st = manager.getConnection().prepareStatement(query);
 			st.setInt(1, userId);
 			st.execute();
 		} catch (SQLException e) {
-			throw new MySQLExseption("There is a problem with the DB");
+			throw new MYSQLException("There is a problem with the DB");
 		}
 	}
 	@Override
-	public void makeAdminToUserByUserId(int userId) throws MySQLExseption {
+	public void makeAdminToUserByUserId(int userId) throws MYSQLException {
 		String query = "UPDATE KnifeShop.User SET isAdmin=false WHERE id = ?";
 		try {
 			PreparedStatement st = manager.getConnection().prepareStatement(query);
 			st.setInt(1, userId);
 			st.execute();
 		} catch (SQLException e) {
-			throw new MySQLExseption("There is a problem with the DB");
+			throw new MYSQLException("There is a problem with the DB");
 		}
 	}
 	@Override
-	public ArrayList<User> getAllUsersFromDB() throws MySQLExseption {
+	public ArrayList<User> getAllUsersFromDB() throws MYSQLException {
 		String query = "SELECT id, username, email, age, isAdmin FROM KnifeShop.User WHERE isAdmin = false";
 		ArrayList<User> allUsers = new ArrayList<>();
 		try {
@@ -121,12 +121,12 @@ public class DBUserDAO implements IDBUserDAO{
 				allUsers.add(user);
 			}
 		} catch (SQLException e) {
-			throw new MySQLExseption("There is a problem with the DB");
+			throw new MYSQLException("There is a problem with the DB");
 		}
 		return allUsers;
 	}
 	@Override
-	public ArrayList<User> getAllAdminsFromDB() throws MySQLExseption {
+	public ArrayList<User> getAllAdminsFromDB() throws MYSQLException {
 		String query = "SELECT id, username, email, age, isAdmin FROM KnifeShop.User WHERE NOT username = \"adminMaster\" AND isAdmin = true";
 		ArrayList<User> allAdmins = new ArrayList<>();
 		try {
@@ -142,13 +142,13 @@ public class DBUserDAO implements IDBUserDAO{
 				allAdmins.add(admin);
 			}
 		} catch (SQLException e) {
-			throw new MySQLExseption("There is a problem with the DB");
+			throw new MYSQLException("There is a problem with the DB");
 		}
 		return allAdmins;
 	}
 	
 	@Override
-	public boolean isTheUserAdminByUserId(int userId) throws MySQLExseption {
+	public boolean isTheUserAdminByUserId(int userId) throws MYSQLException {
 		String query = "SELECT isAdmin FROM KnifeShop.User WHERE id = ?";
 		boolean isTheUserAdmin = false;
 		try {
@@ -159,13 +159,13 @@ public class DBUserDAO implements IDBUserDAO{
 				isTheUserAdmin = rs.getBoolean(1);
 			}
 		} catch (SQLException e) {
-			throw new MySQLExseption("There is a problem with the DB");
+			throw new MYSQLException("There is a problem with the DB");
 		}
 		return isTheUserAdmin;
 	}
 	
 	@Override
-	public int getUserIdByUsernameAndPassword(String username, String password) throws MySQLExseption {
+	public int getUserIdByUsernameAndPassword(String username, String password) throws MYSQLException {
 		String query = "SELECT id FROM KnifeShop.User WHERE username = ? and password = ?";
 		int userId = 0;
 		try {
@@ -177,13 +177,13 @@ public class DBUserDAO implements IDBUserDAO{
 				userId = rs.getInt(1);
 			}
 		} catch (SQLException e) {
-			throw new MySQLExseption("There is a problem with the DB");
+			throw new MYSQLException("There is a problem with the DB");
 		}
 		return userId;
 	}
 	
 	@Override
-	public User getUserByUserId(int userId) throws MySQLExseption {
+	public User getUserByUserId(int userId) throws MYSQLException {
 		String query = "SELECT id, username, password, email, age, isAdmin FROM KnifeShop.User WHERE id = ?";
 		try {
 			PreparedStatement st = manager.getConnection().prepareStatement(query);
@@ -200,25 +200,25 @@ public class DBUserDAO implements IDBUserDAO{
 				return user;
 			}
 		} catch (SQLException e) {
-			throw new MySQLExseption("There is a problem with the DB");
+			throw new MYSQLException("There is a problem with the DB");
 		}
 		return null;
 	}
 	
 	@Override
-	public void deleteUserOrAdminFromDbByUsername(int userId) throws MySQLExseption {
+	public void deleteUserOrAdminFromDbByUsername(int userId) throws MYSQLException {
 		String query = "DELETE FROM KnifeShop.User WHERE id = ?";
 		try {
 			PreparedStatement st = manager.getConnection().prepareStatement(query);
 			st.setInt(1, userId);
 			st.execute();
 		} catch (SQLException e) {
-			throw new MySQLExseption("There is a problem with the DB");
+			throw new MYSQLException("There is a problem with the DB");
 		}
 	}
 	
 	@Override
-	public boolean isTheUserMasterAdminByUserId(int userId) throws MySQLExseption {
+	public boolean isTheUserMasterAdminByUserId(int userId) throws MYSQLException {
 		String query = "SELECT isMasterAdmin FROM KnifeShop.User WHERE id = ?";
 		boolean isTheUserMasterAdmin = false;
 		try {
@@ -229,13 +229,13 @@ public class DBUserDAO implements IDBUserDAO{
 				isTheUserMasterAdmin = rs.getBoolean(1);
 			}
 		} catch (SQLException e) {
-			throw new MySQLExseption("There is a problem with the DB");
+			throw new MYSQLException("There is a problem with the DB");
 		}
 		return isTheUserMasterAdmin;
 	}
 	
 	@Override
-	public boolean isThereSuchUsernameInDB(String username) throws MySQLExseption {
+	public boolean isThereSuchUsernameInDB(String username) throws MYSQLException {
 		String query = "SELECT username FROM KnifeShop.User";
 		try {
 			Statement st = manager.getConnection().createStatement();
@@ -246,13 +246,13 @@ public class DBUserDAO implements IDBUserDAO{
 				}
 			}
 		} catch (SQLException e) {
-			throw new MySQLExseption("There is a problem with the DB");
+			throw new MYSQLException("There is a problem with the DB");
 		}
 		return false;
 	}
 	
 	@Override
-	public boolean isThereSuchEmailInDB(String email) throws MySQLExseption {
+	public boolean isThereSuchEmailInDB(String email) throws MYSQLException {
 		String query = "SELECT email FROM KnifeShop.User";
 		try {
 			Statement st = manager.getConnection().createStatement();
@@ -263,7 +263,7 @@ public class DBUserDAO implements IDBUserDAO{
 				}
 			}
 		} catch (SQLException e) {
-			throw new MySQLExseption("There is a problem with the DB");
+			throw new MYSQLException("There is a problem with the DB");
 		}
 		return false;
 	}

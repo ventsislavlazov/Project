@@ -20,13 +20,13 @@
 
 	<style>
 	
-		#success{
-			position: absolute;
-			top: 470px;
-			left: 920px;
-			color: green;
-			font-size:45px;
-			text-align: center;
+		#success {
+		    position: absolute;
+		    top: 83px;
+		    left: 817px;
+		    color: green;
+		    font-size: 23px;
+		    text-align: center;
 		}
 		
 		#tableId{

@@ -12,8 +12,8 @@
 
 		#error{
 			position: absolute;
-		    top: 499px;
-		    left: 546px;
+		    top: 529px;
+		    left: 526px;
 		    color:red;
 		    font-size:23px;
 		}

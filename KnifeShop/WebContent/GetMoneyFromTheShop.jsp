@@ -20,6 +20,10 @@
 
 	<style>	
 	
+		#text{
+			max-width: 401px;
+		}
+	
 		#tableIdPrim{
 			position: absolute;
 			top: 250px;
@@ -89,7 +93,7 @@
 				 </td>
 				</tr>
 			</table>
-			<textarea rows="6" cols="50" name="commentName" form="formId" placeholder = "Enter comment here..."></textarea>
+			<textarea rows="6" cols="50" name="commentName" id = "text" form="formId" placeholder = "Enter comment here..."></textarea>
 	</div>
 
 </body>

@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import exceptions.MySQLExseption;
+import exceptions.MYSQLException;
 import model.classes.FilterSession;
 import model.classes.Knife;
 import model.dao.DBBasketDAO;
@@ -37,7 +37,7 @@ public class AddToBasketServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		
+		//if(request.getParameter("quantityToAdd")!=null && isValidInteger(request.getParameter("quantityToAdd").toString())){
 		int currentUserId = Integer.parseInt(session.getAttribute("userId").toString());
 		int knifeToAddId = Integer.parseInt(request.getParameter("knifeToAddId").toString());
 		int requestedQuantity = Integer.parseInt(request.getParameter("quantityToAdd").toString());
@@ -45,7 +45,7 @@ public class AddToBasketServlet extends HttpServlet {
 		int totalQuantityForThisKnife = 0;
 		try {
 			totalQuantityForThisKnife = knifeDAO.getQuantityByKnifeId(knifeToAddId);
-		} catch (MySQLExseption e) {
+		} catch (MYSQLException e) {
 			e.getMessage();
 			e.printStackTrace();
 			request.getRequestDispatcher("InternalServerError.jsp").forward(request, response);
@@ -64,7 +64,7 @@ public class AddToBasketServlet extends HttpServlet {
 					}else{//ako ot tozi noj nqma dobaweno koli4estwo w koli4kata, se slaga samo sega6noto koli4estwo
 						try {
 							basketDAO.addKnifeToBasketByKnifeId(currentUserId, knifeToAddId, requestedQuantity);
-						} catch (MySQLExseption e) {
+						} catch (MYSQLException e) {
 							e.getMessage();
 							e.printStackTrace();
 							request.getRequestDispatcher("InternalServerError.jsp").forward(request, response);
@@ -72,13 +72,6 @@ public class AddToBasketServlet extends HttpServlet {
 						request.setAttribute("successAdd", "you have added " + requestedQuantity + 
 								" from knife \"" + knifeModel + "\"successfully to the basket");
 					}
-					
-//				DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-//				LocalDateTime now = LocalDateTime.now();
-//				String currentDateTime = dtf.format(now);
-//				
-//				Knife knife = knifeDAO.getKnifeByKnifeId(knifeToAddId);
-//				knife.setCurrentDateTimeWhenIsAddedToTheBasket(currentDateTime);
 					
 					LocalDateTime now = LocalDateTime.now();
 					Knife knife = knifeDAO.getKnifeByKnifeId(knifeToAddId);
@@ -89,7 +82,7 @@ public class AddToBasketServlet extends HttpServlet {
 					
 					ArrayList<Knife> allKnifesFromTheBasket = new ArrayList<>();
 					allKnifesFromTheBasket = basketDAO.getAllKnifesFromTheBasketByUserId(currentUserId);
-					//allKnifesFromTheBasket.add(knifeDAO.getKnifeByKnifeId(knifeToAddId));
+					
 					session.removeAttribute("knifesInTheBasket");
 					session.setAttribute("knifesInTheBasket", allKnifesFromTheBasket);
 					
@@ -102,13 +95,22 @@ public class AddToBasketServlet extends HttpServlet {
 				request.setAttribute("noQuantity", 
 						"there is not quantity, from knife : " + knifeModel);
 			}
-		} catch (MySQLExseption e) {
+		} catch (MYSQLException e) {
 			e.getMessage();
 			e.printStackTrace();
 			request.getRequestDispatcher("InternalServerError.jsp").forward(request, response);
 		}
 		FilterSession filter = new FilterSession();
 		filter.filter(request, response, session, "UserViewAllKnifes.jsp");
+//	}else{
+//		//redirect to 404 page
+//	}
+		}
+
+	private boolean isValidInteger(String attribute) {
+		//da ne e "" prazno
+		//gleda6 dali sa validni ascii kodovete na vseki char ot stringa
+		return false;
 	}
 
 }

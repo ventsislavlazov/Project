@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import exceptions.MySQLExseption;
+import exceptions.MYSQLException;
 import model.db.DBManager;
 
 public class DBColorDAO implements IDBColorDAO {
@@ -27,19 +27,19 @@ public class DBColorDAO implements IDBColorDAO {
 	 }
 
 	@Override
-	public void addNewColor(String color) throws MySQLExseption {
+	public void addNewColor(String color) throws MYSQLException {
 		String query = "INSERT INTO KnifeShop.Colors (colorNumber) VALUES (?)";
 		try {
 			PreparedStatement st = manager.getConnection().prepareStatement(query);
 			st.setString(1, color);
 			st.execute();
 		} catch (SQLException e) {
-			throw new MySQLExseption("There is a problem with the DB");
+			throw new MYSQLException("There is a problem with the DB");
 		}
 	}
 
 	@Override
-	public void changeColor(String newColor) throws MySQLExseption {
+	public void changeColor(String newColor) throws MYSQLException {
 		if(!isThereSuchColor(newColor)){
 			addNewColor(newColor);
 		}
@@ -50,12 +50,12 @@ public class DBColorDAO implements IDBColorDAO {
 			st.setString(1, newColor);
 			st.execute();
 		} catch (SQLException e) {
-			throw new MySQLExseption("There is a problem with the DB");
+			throw new MYSQLException("There is a problem with the DB");
 		}
 	}
 
 	@Override
-	public boolean isThereSuchColor(String color) throws MySQLExseption {
+	public boolean isThereSuchColor(String color) throws MYSQLException {
 		String query = "SELECT colorNumber FROM KnifeShop.Colors";
 		try {
 			Statement st = manager.getConnection().createStatement();
@@ -66,25 +66,25 @@ public class DBColorDAO implements IDBColorDAO {
 				}
 			}
 		} catch (SQLException e) {
-			throw new MySQLExseption("There is a problem with the DB");
+			throw new MYSQLException("There is a problem with the DB");
 		}
 		return false;
 	}
 
 	@Override
-	public void makeAllColorsUnactive() throws MySQLExseption {
+	public void makeAllColorsUnactive() throws MYSQLException {
 		String query = "UPDATE KnifeShop.Colors SET chosen = FALSE";
 		try {
 			Statement st = manager.getConnection().createStatement();
 			st.execute(query);
 		} catch (SQLException e) {
-			throw new MySQLExseption("There is a problem with the DB");
+			throw new MYSQLException("There is a problem with the DB");
 		}
 		
 	}
 
 	@Override
-	public String getTheCurrentColor() throws MySQLExseption {
+	public String getTheCurrentColor() throws MYSQLException {
 		String query = "SELECT colorNumber FROM KnifeShop.Colors WHERE chosen = TRUE";
 		String color = null;
 		try {
@@ -94,7 +94,7 @@ public class DBColorDAO implements IDBColorDAO {
 				color = rs.getString(1);
 			}
 		} catch (SQLException e) {
-			throw new MySQLExseption("There is a problem with the DB");
+			throw new MYSQLException("There is a problem with the DB");
 		}
 		return color;
 	}

@@ -12,13 +12,13 @@
 
 		<style>
 		
-			#success{
-				position: absolute;
-				top: 470px;
-				left: 920px;
-				color: green;
-				font-size:45px;
-				text-align: center;
+			#success {
+			    position: absolute;
+			    top: 84px;
+			    left: 832px;
+			    color: green;
+			    font-size: 23px;
+			    text-align: center;
 			}
 			
 			#tableId{

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import javax.servlet.http.HttpSession;
 
-import exceptions.MySQLExseption;
+import exceptions.MYSQLException;
 import model.classes.Knife;
 import model.db.DBManager;
 
@@ -30,7 +30,7 @@ public class DBBasketDAO implements IDBasketDAO {
 	 
 	 
 	@Override
-	public void addKnifeToBasketByKnifeId(int userId, int knifeId, int quantity) throws MySQLExseption {
+	public void addKnifeToBasketByKnifeId(int userId, int knifeId, int quantity) throws MYSQLException {
 		String query = "INSERT INTO KnifeShop.Basket (idUser, idKnife, quantity) VALUES (?, ?, ?)";
 		try {
 			PreparedStatement st = manager.getConnection().prepareStatement(query);
@@ -39,12 +39,12 @@ public class DBBasketDAO implements IDBasketDAO {
 			st.setInt(3, quantity);
 			st.execute();
 		} catch (SQLException e) {
-			throw new MySQLExseption("There is a problem with the DB");
+			throw new MYSQLException("There is a problem with the DB");
 		}
 	}
 
 	@Override
-	public void removeKnifeFromBasketByKnifeId(int userId, int knifeId) throws MySQLExseption {
+	public void removeKnifeFromBasketByKnifeId(int userId, int knifeId) throws MYSQLException {
 		String query = "DELETE FROM KnifeShop.Basket WHERE idUser = ? AND idKnife = ?";
 		try {
 			PreparedStatement st = manager.getConnection().prepareStatement(query);
@@ -52,12 +52,12 @@ public class DBBasketDAO implements IDBasketDAO {
 			st.setInt(2, knifeId);
 			st.execute();
 		} catch (SQLException e) {
-			throw new MySQLExseption("There is a problem with the DB");
+			throw new MYSQLException("There is a problem with the DB");
 		}
 	}
 
 	@Override
-	public boolean isThereSuchKnifeInTheBasketByKnifeId(int userId, int knifeId) throws MySQLExseption {
+	public boolean isThereSuchKnifeInTheBasketByKnifeId(int userId, int knifeId) throws MYSQLException {
 		String query = "SELECT idKnife FROM KnifeShop.Basket WHERE idUser = ?";
 		try {
 			PreparedStatement st = manager.getConnection().prepareStatement(query);
@@ -70,13 +70,13 @@ public class DBBasketDAO implements IDBasketDAO {
 				}
 			}
 		} catch (SQLException e) {
-			throw new MySQLExseption("There is a problem with the DB");
+			throw new MYSQLException("There is a problem with the DB");
 		}
 		return false;
 	}
 
 	@Override
-	public void addMoreQuantityToKnifeInBasket(int userId, int knifeId, int quantityToAdd) throws MySQLExseption {
+	public void addMoreQuantityToKnifeInBasket(int userId, int knifeId, int quantityToAdd) throws MYSQLException {
 		String query = "UPDATE KnifeShop.Basket SET quantity = ? WHERE idUser = ? AND idKnife = ?";
 		int currentQuantity = getQuantityForKnifeFromBasket(userId, knifeId);
 		int updatedQuantity = currentQuantity + quantityToAdd;
@@ -87,12 +87,12 @@ public class DBBasketDAO implements IDBasketDAO {
 			st.setInt(3, knifeId);
 			st.execute();
 		} catch (SQLException e) {
-			throw new MySQLExseption("There is a problem with the DB");
+			throw new MYSQLException("There is a problem with the DB");
 		}
 	}
 
 	@Override
-	public int getQuantityForKnifeFromBasket(int userId, int knifeId) throws MySQLExseption {
+	public int getQuantityForKnifeFromBasket(int userId, int knifeId) throws MYSQLException {
 		String query = "SELECT quantity FROM KnifeShop.Basket WHERE idUser = ? AND idKnife = ?";
 		try {
 			PreparedStatement st = manager.getConnection().prepareStatement(query);
@@ -103,13 +103,13 @@ public class DBBasketDAO implements IDBasketDAO {
 				return rs.getInt(1);
 			}
 		} catch (SQLException e) {
-			throw new MySQLExseption("There is a problem with the DB");
+			throw new MYSQLException("There is a problem with the DB");
 		}
 		return 0;
 	}
 
 	@Override
-	public ArrayList<Knife> getAllKnifesFromTheBasketByUserId(int userId) throws MySQLExseption {
+	public ArrayList<Knife> getAllKnifesFromTheBasketByUserId(int userId) throws MYSQLException {
 		String query = "SELECT idKnife FROM KnifeShop.Basket WHERE idUser = ?";
 		DBKnifeDAO knifeDAO = new DBKnifeDAO();
 		ArrayList<Knife> allKnifesFromBasket = new ArrayList<>();
@@ -123,13 +123,13 @@ public class DBBasketDAO implements IDBasketDAO {
 				allKnifesFromBasket.add(currentKnife);
 			}
 		} catch (SQLException e) {
-			throw new MySQLExseption("There is a problem with the DB");
+			throw new MYSQLException("There is a problem with the DB");
 		}
 		return allKnifesFromBasket;
 	}
 
 	@Override
-	public void removeQuantitFromKnifeInTheBasket(int userId, int knifeId, int quantityToRemove) throws MySQLExseption {
+	public void removeQuantitFromKnifeInTheBasket(int userId, int knifeId, int quantityToRemove) throws MYSQLException {
 		String query = "UPDATE KnifeShop.Basket SET quantity = ? WHERE idUser = ? AND idKnife = ?";
 		int currentQuantity = getQuantityForKnifeFromBasket(userId, knifeId);
 		int updatedQuantity = currentQuantity - quantityToRemove;
@@ -140,31 +140,31 @@ public class DBBasketDAO implements IDBasketDAO {
 			st.setInt(3, knifeId);
 			st.execute();
 		} catch (SQLException e) {
-			throw new MySQLExseption("There is a problem with the DB");
+			throw new MYSQLException("There is a problem with the DB");
 		}
 	}
 
 	@Override
-	public void removeKnifeFromAllBasketsFromAdminByKnifeId(int knifeId) throws MySQLExseption {
+	public void removeKnifeFromAllBasketsFromAdminByKnifeId(int knifeId) throws MYSQLException {
 		String query = "DELETE FROM KnifeShop.Basket WHERE idKnife = ?";
 		try {
 			PreparedStatement st = manager.getConnection().prepareStatement(query);
 			st.setInt(1, knifeId);
 			st.execute();
 		} catch (SQLException e) {
-			throw new MySQLExseption("There is a problem with the DB");
+			throw new MYSQLException("There is a problem with the DB");
 		}
 	}
 
 	@Override
-	public void removeQuantityForSpecificUserByUserId(int userId) throws MySQLExseption {
+	public void removeQuantityForSpecificUserByUserId(int userId) throws MYSQLException {
 		String query = "DELETE FROM KnifeShop.Basket WHERE idUser = ?";
 		try {
 			PreparedStatement st = manager.getConnection().prepareStatement(query);
 			st.setInt(1, userId);
 			st.execute();
 		} catch (SQLException e) {
-			throw new MySQLExseption("There is a problem with the DB");
+			throw new MYSQLException("There is a problem with the DB");
 		}
 	}
 

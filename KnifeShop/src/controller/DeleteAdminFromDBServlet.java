@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import exceptions.MySQLExseption;
+import exceptions.MYSQLException;
 import model.classes.FilterSession;
 import model.classes.User;
 import model.dao.DBUserDAO;
@@ -32,7 +32,7 @@ public class DeleteAdminFromDBServlet extends HttpServlet {
 		int userId = Integer.parseInt(request.getParameter("admin").toString());
 		try {
 			userDAO.deleteUserOrAdminFromDbByUsername(userId);
-		} catch (MySQLExseption e) {
+		} catch (MYSQLException e) {
 			e.getMessage();
 			e.printStackTrace();
 			request.getRequestDispatcher("InternalServerError.jsp").forward(request, response);
@@ -41,7 +41,7 @@ public class DeleteAdminFromDBServlet extends HttpServlet {
 		ArrayList<User> allAdminsAfterTheChange = new ArrayList<>();
 		try {
 			allAdminsAfterTheChange = userDAO.getAllAdminsFromDB();
-		} catch (MySQLExseption e) {
+		} catch (MYSQLException e) {
 			e.getMessage();
 			e.printStackTrace();
 			request.getRequestDispatcher("InternalServerError.jsp").forward(request, response);
@@ -49,7 +49,7 @@ public class DeleteAdminFromDBServlet extends HttpServlet {
 		session.removeAttribute("allAdmins");
 		session.setAttribute("allAdmins", allAdminsAfterTheChange);
 		
-		request.setAttribute("seccess", "you have deleted the admin successfully");
+		request.setAttribute("success", "you have deleted the admin successfully");
 		FilterSession filter = new FilterSession();
 		filter.filter(request, response, session, "DeleteAdminFromDB.jsp");
 	}

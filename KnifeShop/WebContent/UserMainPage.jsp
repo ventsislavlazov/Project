@@ -9,7 +9,11 @@
 <title>Insert title here</title>
 
 	<style>
-	
+		.w3-right {
+    		max-width: 50%;
+    		float: right!important;
+		}
+		
 		#tableId>thead>tr>th{
 				background-color:lightgrey;
 				height: 40px;
@@ -24,7 +28,7 @@
 </head>
 <body>
 
-<div class = w3-left>
+<div class = "w3-left">
 	<h2><b><span>Special offer</span></b> to you! Our <b><span>CHEAPEST</span></b> offers!</h2>
 		<table name = "table" border="1" class = "w3-responsive w3-small" id = "tableId">
 			<thead>
@@ -54,7 +58,7 @@
 		</table>
 </div>
 		
-<div class = w3-right>
+<div class = "w3-right">
 		<h2><b><span>LAST</span></b> knifes! <b><span>DONT MISS</span></b> them!</h2>
 		<table name = "table" border="1" class = "w3-responsive w3-small" id = "tableId">
 			<thead>
@@ -70,7 +74,7 @@
 				 <th align="center">quantity</th>
 			 	</tr>
 		 	</thead>
-		 	<c:forEach items="${lowestQuantity}" var="record">
+		 	<c:forEach items="${lowestQuantityMoreThanZero}" var="record">
 			 		<tr>
 			 		 	<td align="center"><c:out value="${record.manufactor}"/></td>
 			 		 	<td align="center"><c:out value="${record.model}"/></td>

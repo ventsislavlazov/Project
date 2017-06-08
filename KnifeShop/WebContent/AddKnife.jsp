@@ -20,13 +20,13 @@
 
 <style>
 
-	#success{
-		position: absolute;
-		top: 270px;
-		left: 250px;
-		color: green;
-		font-size:45px;
-		text-align: center;
+	#success {
+	    position: absolute;
+	    top: 165px;
+	    left: 946px;
+	    color: green;
+	    font-size: 23px;
+	    text-align: center;
 	}
 	
 	#errorDublicate{

@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import exceptions.MySQLExseption;
+import exceptions.MYSQLException;
 import model.classes.FilterSession;
 import model.classes.Knife;
 import model.classes.User;
@@ -53,7 +53,7 @@ public class LoginServlet extends HttpServlet implements Serializable{
 		int userId = 0;
 		try {
 			userId = userDAO.getUserIdByUsernameAndPassword(username, password);
-		} catch (MySQLExseption e) {
+		} catch (MYSQLException e) {
 			e.getMessage();
 			e.printStackTrace();
 			request.getRequestDispatcher("InternalServerError.jsp").forward(request, response);
@@ -105,7 +105,7 @@ public class LoginServlet extends HttpServlet implements Serializable{
 					request.setAttribute("errorRegister", "invalid username or/and password, maybe you should make a registration first");
 					request.getRequestDispatcher("Login.jsp").forward(request, response);
 				}
-			} catch (MySQLExseption e) {
+			} catch (MYSQLException e) {
 				e.getMessage();
 				e.printStackTrace();
 				request.getRequestDispatcher("InternalServerError.jsp").forward(request, response);
@@ -118,7 +118,7 @@ public class LoginServlet extends HttpServlet implements Serializable{
 		
 	}
 	
-	private void deletesItemsFromBasketIfTheTimeHasGone(int userId) throws MySQLExseption {
+	private void deletesItemsFromBasketIfTheTimeHasGone(int userId) throws MYSQLException {
 		LocalDateTime currentDateTime = LocalDateTime.now();
 		//da naprawq koga ko6nicata e pipana za posledno, a ne nojowete
 		ArrayList<Knife> knifesInTheBasket = basketDAO.getAllKnifesFromTheBasketByUserId(userId);
@@ -132,16 +132,17 @@ public class LoginServlet extends HttpServlet implements Serializable{
 		}
 	}
 
-	public void basicUserSessionAttributes(HttpSession session, int userId) throws MySQLExseption {
+	public void basicUserSessionAttributes(HttpSession session, int userId) throws MYSQLException {
 		session.setAttribute("knifesInTheBasket",basketDAO.getAllKnifesFromTheBasketByUserId(userId));
 		session.setAttribute("allKnifes", knifeDAO.getAllKnifesFromDB());
 		session.setAttribute("userId", userId);
 		session.setAttribute("color", colorDAO.getTheCurrentColor());
 		session.setAttribute("cheapest", knifeDAO.getTheThreeCheapest());
-		session.setAttribute("lowestQuantity", knifeDAO.getTheThreeWithLowestQuantity());
+		//session.setAttribute("lowestQuantity", knifeDAO.getTheThreeWithLowestQuantity());
+		session.setAttribute("lowestQuantityMoreThanZero", knifeDAO.getLastTreeByQuantityMoreThanZero());
 	}
 
-	public void basicAdminSessionAttributes(HttpSession session) throws MySQLExseption {
+	public void basicAdminSessionAttributes(HttpSession session) throws MYSQLException {
 		session.setAttribute("manufactor", knifeDAO.getAllManufactorsNamesFromDB());
 		session.setAttribute("steel", knifeDAO.getAllSteelsNamesFromDB());
 		session.setAttribute("lock", knifeDAO.getAllLocksNamesFromDB());

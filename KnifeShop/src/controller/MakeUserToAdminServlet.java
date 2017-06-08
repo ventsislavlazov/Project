@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import exceptions.MySQLExseption;
+import exceptions.MYSQLException;
 import model.classes.FilterSession;
 import model.classes.User;
 import model.dao.DBUserDAO;
@@ -33,7 +33,7 @@ public class MakeUserToAdminServlet extends HttpServlet implements Serializable{
 		int userId = Integer.parseInt(request.getParameter("user").toString());
 		try {
 			userDAO.makeUserToAdminByUserId(userId);
-		} catch (MySQLExseption e) {
+		} catch (MYSQLException e) {
 			e.getMessage();
 			e.printStackTrace();
 			request.getRequestDispatcher("InternalServerError.jsp").forward(request, response);
@@ -42,7 +42,7 @@ public class MakeUserToAdminServlet extends HttpServlet implements Serializable{
 		ArrayList<User> allAdmins = new ArrayList<>();
 		try {
 			allAdmins = userDAO.getAllAdminsFromDB();
-		} catch (MySQLExseption e) {
+		} catch (MYSQLException e) {
 			e.getMessage();
 			e.printStackTrace();
 			request.getRequestDispatcher("InternalServerError.jsp").forward(request, response);
@@ -53,7 +53,7 @@ public class MakeUserToAdminServlet extends HttpServlet implements Serializable{
 		ArrayList<User> allUsersAfterTheChange = new ArrayList<>();
 		try {
 			allUsersAfterTheChange = userDAO.getAllUsersFromDB();
-		} catch (MySQLExseption e) {
+		} catch (MYSQLException e) {
 			e.getMessage();
 			e.printStackTrace();
 			request.getRequestDispatcher("InternalServerError.jsp").forward(request, response);

@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import exceptions.MySQLExseption;
+import exceptions.MYSQLException;
 import model.classes.FilterSession;
 import model.dao.DBColorDAO;
 
@@ -28,7 +28,7 @@ public class ColorChooseServlet extends HttpServlet {
 		String colorName = request.getParameter("colorName").toString();
 		try {
 			colorDAO.changeColor(colorName);
-		} catch (MySQLExseption e) {
+		} catch (MYSQLException e) {
 			e.getMessage();
 			e.printStackTrace();
 			request.getRequestDispatcher("InternalServerError.jsp").forward(request, response);
